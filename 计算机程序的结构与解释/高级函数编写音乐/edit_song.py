@@ -13,7 +13,7 @@ def encode(x):
     i = int(16384 * x)
     return Struct('h').pack(i)
 
-def play(sampler, name='song.wav', seconds=8):
+def play(sampler, name='song.wav', seconds= 16):
     """
     使用sampler生成一个持续时间为seconds的音频文件，命名为song.wav
     sampler是一个函数，它将描述我们试图生成的歌曲的波型
@@ -118,75 +118,75 @@ def mysong_at(octave):
     g = tri(g_frequency * octave)
     return mysong(e, d, c, low_b, low_a, g)
 
-def mysong(e, d, c, low_b, low_a, g):
+def mysong(e, d, c, low_b, low_a, g, speed = 1.25):
     """
     演奏《爱的回归心线》高潮部分
     在爱的回归线，又期待会相见，天会晴心会暖 阳光在手指间
     """
-    z = 1/4
-    song = note(e, z, z + 1/4)
-    z = z + 1/4
-    song = both(song, note(d, z, z + 1/4))
-    z = z + 1/4
-    song = both(song, note(c, z, z + 1/4))
-    z = z + 1/4
+    z = 1/4 * speed
+    song = note(e, z, z + 1/4 * speed)
+    z = z + 1/4 * speed
+    song = both(song, note(d, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
+    song = both(song, note(c, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
 
-    song = both(song, note(e, z, z + 1/2))
-    z = z + 1/2 + 1/4
-    song = both(song, note(c, z, z + 1/8))
-    z = z + 1/8
-    song = both(song, note(d, z, z + 1/8 + 1/4))
-    z = z + 1/8 + 1/4
+    song = both(song, note(e, z, z + 1/2 * speed))
+    z = z + 1/2 * speed + 1/4 * speed
+    song = both(song, note(c, z, z + 1/8 * speed))
+    z = z + 1/8 * speed
+    song = both(song, note(d, z, z + 1/8 * speed + 1/4 * speed))
+    z = z + 1/8 * speed + 1/4 * speed
 
-    song = both(song, note(d, z, z + 1/4))
-    z = z + 1/4
-    song = both(song, note(c, z, z + 1/4))
-    z = z + 1/4
-    song = both(song, note(low_b, z, z + 1/4))
-    z = z + 1/4
+    song = both(song, note(d, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
+    song = both(song, note(c, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
+    song = both(song, note(low_b, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
 
-    song = both(song, note(d, z, z + 1/2))
-    z = z + 1/2 + 1/4
-    song = both(song, note(low_b, z, z + 1/8))
-    z = z + 1/8
-    song = both(song, note(c, z, z + 1/8 + 1/4))
-    z = z + 1/8 + 1/4
+    song = both(song, note(d, z, z + 1/2 * speed))
+    z = z + 1/2 * speed + 1/4 * speed
+    song = both(song, note(low_b, z, z + 1/8 * speed))
+    z = z + 1/8 * speed
+    song = both(song, note(c, z, z + 1/8 * speed + 1/4 * speed))
+    z = z + 1/8 * speed + 1/4 * speed
 
-    song = both(song, note(e, z, z + 1/4))
-    z = z + 1/4
-    song = both(song, note(d, z, z + 1/4))
-    z = z + 1/4
-    song = both(song, note(c, z, z + 1/4))
-    z = z + 1/4
+    song = both(song, note(e, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
+    song = both(song, note(d, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
+    song = both(song, note(c, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
 
-    song = both(song, note(d, z, z + 1/4))
-    z = z + 1/4
-    song = both(song, note(c, z, z + 1/8))
-    z = z + 1/8
-    song = both(song, note(low_a, z, z + 1/8 + 1/4))
-    z = z + 1/2
-    song = both(song, note(c, z, z + 1/8))
-    z = z + 1/8
+    song = both(song, note(d, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
+    song = both(song, note(c, z, z + 1/8 * speed))
+    z = z + 1/8 * speed
+    song = both(song, note(low_a, z, z + 1/8 * speed + 1/4 * speed))
+    z = z + 1/2 * speed
+    song = both(song, note(c, z, z + 1/8 * speed))
+    z = z + 1/8 * speed
 
-    song = both(song, note(low_b, z, z + 1/4))
-    z = z + 1/4
-    song = both(song, note(g, z, z + 1/8))
-    z = z + 1/8
-    song = both(song, note(g, z, z + 1/8 + 1/8))
-    z = z + 1/8 + 1/8
-    song = both(song, note(d, z, z + 1/4))
-    z = z + 1/4
-    song = both(song, note(e, z, z + 1/8))
-    z = z + 1/8
+    song = both(song, note(low_b, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
+    song = both(song, note(g, z, z + 1/8 * speed))
+    z = z + 1/8 * speed
+    song = both(song, note(g, z, z + 1/8 * speed + 1/8 * speed))
+    z = z + 1/8 * speed + 1/8 * speed
+    song = both(song, note(d, z, z + 1/4 * speed))
+    z = z + 1/4 * speed
+    song = both(song, note(e, z, z + 1/8 * speed))
+    z = z + 1/8 * speed
 
-    song = both(song, note(e, z, z + 1))
+    song = both(song, note(e, z, z + 1 * speed))
     return song
 
 # mario_song_low = mario_at(0.5)
 # mario_song = mario_at(1)
 # play(both(mario_song_low, mario_song), 'mario.wav', 2)
 
-song = mysong_at(1)
-song_high = mysong_at(2)
+song = mysong_at(1.5)
 
-play(both(song, song_high), 'mysong.wav', 8)
+
+play(song, 'mysong.wav', 8 * 1.25)

@@ -13,7 +13,7 @@ def encode(x):
     i = int(16384 * x)
     return Struct('h').pack(i)
 
-def play(sampler, name='song.wav', seconds=2):
+def play(sampler, name='song.wav', seconds=8):
     """
     使用sampler生成一个持续时间为seconds的音频文件，命名为song.wav
     sampler是一个函数，它将描述我们试图生成的歌曲的波型
@@ -44,10 +44,18 @@ def tri(frequency, amplitude=0.7):
         return amplitude * tri_wave # 将三角波的振幅调整到我们想要的水平
     return sampler
 
+
 c_frequency = 261.63 # C4音符的频率
 e_frequency = 329.63 # E4音符的频率
+delta = (e_frequency - c_frequency) / 2 
+d_frequency = c_frequency + delta # D4音符的频率
 g_frequency = 392.00 # G4音符的频率
 low_g_frequency = 196.00 # G3音符的频率
+a_frequency = g_frequency + delta # A4音符的频率
+b_frequency = g_frequency + delta * 2 # B4音符的频率
+low_a_frequency = a_frequency / 2 # A3音符的频率
+low_b_frequency = b_frequency / 2 # B3音符的频率
+
 
 def both(f,g):
     """
@@ -76,24 +84,109 @@ def note(f, start, end, fade=0.01):
             return f(t)
     return sampler
 
-c, e = tri(c_frequency), tri(e_frequency)
-g = tri(g_frequency)
-low_g = tri(low_g_frequency)
+def mario_at(octave):
+    c = tri(c_frequency * octave)
+    e = tri(e_frequency * octave)
+    g = tri(g_frequency * octave)
+    low_g = tri(low_g_frequency * octave)
+    return mario(c, e, g, low_g)
 
-z = 0
-song = note(e, z, z + 1/8)
-z = z + 1/8
-song = both(song, note(e, z, z + 1/8))
-z = z + 1/4
-song = both(song, note(e, z, z + 1/8))
-z = z + 1/4
-song = both(song, note(c, z, z + 1/8))
-z = z + 1/8
-song = both(song, note(e, z, z + 1/8))
-z = z + 1/4
-song = both(song, note(g, z, z + 1/4))
-z = z + 1/2
-song = both(song, note(low_g, z, z + 1/4))
-z = z + 1/2
+def mario(c, e, g, low_g):
+    z = 0
+    song = note(e, z, z + 1/8)
+    z = z + 1/8
+    song = both(song, note(e, z, z + 1/8))
+    z = z + 1/4
+    song = both(song, note(e, z, z + 1/8))
+    z = z + 1/4
+    song = both(song, note(c, z, z + 1/8))
+    z = z + 1/8
+    song = both(song, note(e, z, z + 1/8))
+    z = z + 1/4
+    song = both(song, note(g, z, z + 1/4))
+    z = z + 1/2
+    song = both(song, note(low_g, z, z + 1/4))
+    z = z + 1/2
+    return song
 
-play(song)
+def mysong_at(octave):
+    e = tri(e_frequency * octave)
+    d = tri(d_frequency * octave)
+    c = tri(c_frequency * octave)
+    low_b = tri(low_b_frequency * octave)
+    low_a = tri(low_a_frequency * octave)
+    g = tri(g_frequency * octave)
+    return mysong(e, d, c, low_b, low_a, g)
+
+def mysong(e, d, c, low_b, low_a, g):
+    """
+    演奏《爱的回归心线》高潮部分
+    在爱的回归线，又期待会相见，天会晴心会暖 阳光在手指间
+    """
+    z = 1/4
+    song = note(e, z, z + 1/4)
+    z = z + 1/4
+    song = both(song, note(d, z, z + 1/4))
+    z = z + 1/4
+    song = both(song, note(c, z, z + 1/4))
+    z = z + 1/4
+
+    song = both(song, note(e, z, z + 1/2))
+    z = z + 1/2 + 1/4
+    song = both(song, note(c, z, z + 1/8))
+    z = z + 1/8
+    song = both(song, note(d, z, z + 1/8 + 1/4))
+    z = z + 1/8 + 1/4
+
+    song = both(song, note(d, z, z + 1/4))
+    z = z + 1/4
+    song = both(song, note(c, z, z + 1/4))
+    z = z + 1/4
+    song = both(song, note(low_b, z, z + 1/4))
+    z = z + 1/4
+
+    song = both(song, note(d, z, z + 1/2))
+    z = z + 1/2 + 1/4
+    song = both(song, note(low_b, z, z + 1/8))
+    z = z + 1/8
+    song = both(song, note(c, z, z + 1/8 + 1/4))
+    z = z + 1/8 + 1/4
+
+    song = both(song, note(e, z, z + 1/4))
+    z = z + 1/4
+    song = both(song, note(d, z, z + 1/4))
+    z = z + 1/4
+    song = both(song, note(c, z, z + 1/4))
+    z = z + 1/4
+
+    song = both(song, note(d, z, z + 1/4))
+    z = z + 1/4
+    song = both(song, note(c, z, z + 1/8))
+    z = z + 1/8
+    song = both(song, note(low_a, z, z + 1/8 + 1/4))
+    z = z + 1/2
+    song = both(song, note(c, z, z + 1/8))
+    z = z + 1/8
+
+    song = both(song, note(low_b, z, z + 1/4))
+    z = z + 1/4
+    song = both(song, note(g, z, z + 1/8))
+    z = z + 1/8
+    song = both(song, note(g, z, z + 1/8 + 1/8))
+    z = z + 1/8 + 1/8
+    song = both(song, note(d, z, z + 1/4))
+    z = z + 1/4
+    song = both(song, note(e, z, z + 1/8))
+    z = z + 1/8
+
+    song = both(song, note(e, z, z + 1))
+    return song
+
+# mario_song_low = mario_at(0.5)
+# mario_song = mario_at(1)
+# play(both(mario_song_low, mario_song), 'mario.wav', 2)
+
+song = mysong_at(1)
+song_high = mysong_at(2)
+
+play(both(song, song_high), 'mysong.wav', 8)
